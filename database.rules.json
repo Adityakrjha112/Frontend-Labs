@@ -1,0 +1,31 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        "practice": {
+          ".validate": "newData.child('version').isNumber()"
+        },
+        "roadmap": {
+          ".validate": "newData.child('app').val() === 'fe-depth-tracker' && newData.child('schema').isNumber()"
+        },
+        "meta": {
+          "merged": {
+            "$fingerprint": {
+              ".validate": "newData.isString() && $fingerprint.matches(/^fp[0-9a-f]+$/)"
+            }
+          },
+          "$other": {
+            ".validate": false
+          }
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}

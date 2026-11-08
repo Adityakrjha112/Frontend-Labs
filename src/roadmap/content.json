@@ -1,0 +1,1399 @@
+{
+ "title": "Front-End Engineering Depth: 6-Month Roadmap",
+ "asOf": "2026-11-07",
+ "months": [
+  {
+   "id": "m1",
+   "n": 1,
+   "weeks": "1–4",
+   "title": "The platform before the framework",
+   "theme": "Platform",
+   "intro": "This month you build without a framework, using only HTML and CSS, so you see what the browser gives you for free. Everything after this builds on it: React output is still HTML, and most accessibility bugs are HTML bugs.",
+   "topics": [
+    {
+     "id": "w1",
+     "week": 1,
+     "title": "Semantic HTML and forms",
+     "time": "10 hours",
+     "purpose": "Pick the element that carries meaning, focus behavior, and keyboard support by itself, and use native form features before writing JavaScript.",
+     "prereq": "None.",
+     "skip": "Fix every problem in assessment question 1 in under 20 minutes, without any `role` attributes.",
+     "concepts": "document outline and landmarks (`header`, `nav`, `main`, `footer`); `button` vs `a`; `label`/`for` and implicit labels; `fieldset`/`legend`; input `type`, `autocomplete`, `inputmode`; constraint validation (`required`, `pattern`, `:user-invalid`, `setCustomValidity`); the `form` submit event vs click handlers; `name` and `FormData`.",
+     "project": "A multi-step bike-rental booking form in plain HTML, CSS, and a little JavaScript. It has contact details, a date range, and a payment section with mocked submission (a `setTimeout` that resolves or rejects). It must work with JavaScript turned off up to the final submit.",
+     "exercise": "Add an error summary that appears on submit, lists each invalid field as a link that moves focus to it, and is announced by a screen reader.",
+     "hint": "look at how the GOV.UK Design System error summary handles focus and `role`.",
+     "questions": [
+      "When would you choose a link over a button, and what breaks if you pick wrong?",
+      "What does the browser's constraint validation API give you, and when do you turn it off with `novalidate`?",
+      "Why does `autocomplete` matter for both accessibility and conversion?"
+     ],
+     "resources": [
+      [
+       "web.dev Learn Forms",
+       "https://web.dev/learn/forms"
+      ],
+      [
+       "MDN web forms guide",
+       "https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Forms"
+      ],
+      [
+       "GOV.UK error summary",
+       "https://design-system.service.gov.uk/components/error-summary/"
+      ]
+     ],
+     "tasks": [
+      "Booking form works with JavaScript disabled",
+      "Error summary done",
+      "Bug write-up of one form bug"
+     ]
+    },
+    {
+     "id": "w2",
+     "week": 2,
+     "title": "Accessibility fundamentals",
+     "time": "10 hours",
+     "purpose": "Build interfaces that work with a keyboard, a screen reader, zoom, and reduced motion, and verify that with real assistive technology rather than assumptions.",
+     "prereq": "Week 1.",
+     "skip": "Build an accessible modal dialog from memory: focus moves in, focus is trapped, Escape closes it, focus returns to the trigger, and the background is inert.",
+     "concepts": "the accessibility tree; accessible name computation; the first rule of ARIA (don't use it when a native element exists); roles, states, properties; focus management and `inert`; `<dialog>`; live regions (`aria-live`, `role=“status”`); visible focus (`:focus-visible`); contrast; `prefers-reduced-motion`; WCAG 2.2 levels A and AA.",
+     "project": "Audit your week 1 form with axe DevTools, then with a screen reader (NVDA on Windows or VoiceOver on macOS) using only the keyboard. Log each issue with its WCAG criterion and fix it. Add an accessible modal (“Confirm booking”) and a tabs component that follow the ARIA Authoring Practices Guide patterns.",
+     "exercise": "Build an accessible autocomplete combobox for “pickup station” that filters a 200-item mocked list.",
+     "hint": "read the APG combobox pattern and decide between `aria-activedescendant` and moving DOM focus; write down why you chose one.",
+     "questions": [
+      "Automated tools catch roughly a third of accessibility issues. What do you test manually, and how?",
+      "Walk me through what should happen to focus when a modal opens and closes.",
+      "How do you announce an async result (“3 bikes found”) without moving focus?"
+     ],
+     "resources": [
+      [
+       "ARIA Authoring Practices Guide",
+       "https://www.w3.org/WAI/ARIA/apg/"
+      ],
+      [
+       "WCAG 2.2 quick reference",
+       "https://www.w3.org/WAI/WCAG22/quickref/"
+      ],
+      [
+       "WebAIM screen reader guides",
+       "https://webaim.org/articles/"
+      ],
+      [
+       "Inclusive Components",
+       "https://inclusive-components.design/"
+      ]
+     ],
+     "tasks": [
+      "Axe and screen reader audit logged",
+      "Modal, tabs, and combobox built",
+      "Explainer on the accessibility tree"
+     ]
+    },
+    {
+     "id": "w3",
+     "week": 3,
+     "title": "CSS layout",
+     "time": "10 hours",
+     "purpose": "Predict layout instead of tweaking values until it looks right. Know how the flex and grid sizing algorithms decide sizes.",
+     "prereq": "Week 1.",
+     "skip": "Explain assessment question 2 and build a holy-grail layout (header, sidebar, main, footer) with Grid in 15 minutes, without media queries for the sidebar.",
+     "concepts": "the cascade, specificity, `@layer`; the box model and `box-sizing`; normal flow, block formatting contexts, margin collapse; the flex algorithm (`flex-basis`, grow and shrink, the `min-width: auto` rule); grid tracks, `fr`, `minmax()`, `auto-fit`/`auto-fill`, named areas, subgrid; intrinsic sizing (`min-content`, `max-content`, `fit-content`); stacking contexts and `z-index`; logical properties.",
+     "project": "The shell of an operations dashboard: a sticky header, a collapsible sidebar, a card grid that reflows with no media queries, and a data table that scrolls horizontally inside its card without the page overflowing.",
+     "exercise": "Collect five real layout bugs (overflow from long words, a `z-index` that won't win, margin collapse, a flex item that won't shrink, a grid blowout). Reproduce each one in a minimal CodePen and write a one-paragraph root cause for each.",
+     "hint": "each one is explained by a single spec rule. Find the rule, not just the fix.",
+     "questions": [
+      "Why can `z-index: 9999` lose to `z-index: 1`?",
+      "When do you reach for Grid instead of Flexbox? Give an example where either works and explain your pick.",
+      "What does `minmax(0, 1fr)` fix that `1fr` doesn't?"
+     ],
+     "resources": [
+      [
+       "web.dev Learn CSS",
+       "https://web.dev/learn/css"
+      ],
+      [
+       "Josh Comeau's interactive Flexbox guide",
+       "https://www.joshwcomeau.com/css/interactive-guide-to-flexbox/"
+      ],
+      [
+       "Josh Comeau's interactive Grid guide",
+       "https://www.joshwcomeau.com/css/interactive-guide-to-grid/"
+      ],
+      [
+       "Every Layout",
+       "https://every-layout.dev/"
+      ]
+     ],
+     "tasks": [
+      "Dashboard shell built",
+      "Five layout bugs reproduced and explained"
+     ]
+    },
+    {
+     "id": "w4",
+     "week": 4,
+     "title": "Responsive design",
+     "time": "10 hours, including the month review",
+     "purpose": "Build layouts that adapt to their container, the user's settings, and the device, not just to three breakpoints.",
+     "prereq": "Week 3.",
+     "skip": "Make a card component switch from stacked to side-by-side based on its container width, and make the page pass 400% zoom without horizontal scroll (WCAG 1.4.10 Reflow).",
+     "concepts": "content-first breakpoints; container queries and container units; fluid type and space with `clamp()`; `rem` vs `px` and user font settings; responsive images (`srcset`, `sizes`, `<picture>`, `width`/`height` to prevent layout shift); viewport units (`dvh`, `svh`); touch targets; `prefers-color-scheme`.",
+     "project": "Make the week 3 dashboard fully responsive. Cards use container queries, type scales fluidly, the table becomes a stacked list below 480px, and there's a dark mode built on custom properties.",
+     "exercise": "Add a hero image served as AVIF or WebP with fallbacks and correct `sizes`. Prove with the DevTools Network panel that a 375px phone downloads the small file.",
+     "hint": "the browser picks a file before layout, so `sizes` is your promise about the rendered width.",
+     "questions": [
+      "When are container queries better than media queries, and when are they not?",
+      "How does `sizes` affect which image the browser downloads?",
+      "Why should font sizes respect the user's browser setting, and how do you do that?"
+     ],
+     "resources": [
+      [
+       "web.dev Learn Responsive Design",
+       "https://web.dev/learn/design"
+      ],
+      [
+       "MDN container queries",
+       "https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_containment/Container_queries"
+      ],
+      [
+       "Utopia fluid type calculator",
+       "https://utopia.fyi/"
+      ]
+     ],
+     "tasks": [
+      "Responsive dashboard and dark mode done",
+      "Month 1 checkpoint completed"
+     ]
+    }
+   ],
+   "milestone": [
+    "axe DevTools reports 0 violations on every page.",
+    "All flows complete with the keyboard alone, with a visible focus indicator at every step.",
+    "A screen reader announces every form error and every async status.",
+    "Pages reflow at 320 CSS px wide and at 400% zoom with no horizontal scrolling, except inside the data table.",
+    "Lighthouse Accessibility score is 100. Treat this as the minimum, since it's automated.",
+    "No `div` or `span` has a click handler."
+   ],
+   "checkpoint": "Re-answer assessment questions 1 and 2. Then record a 5-minute video walking through your form's accessibility, as if you were presenting it to a teammate."
+  },
+  {
+   "id": "m2",
+   "n": 2,
+   "weeks": "5–8",
+   "title": "How JavaScript and the browser actually run",
+   "theme": "JS and browser",
+   "intro": "This month covers your three biggest gaps: async ordering, main-thread performance, and how requests behave. It's all vanilla JavaScript on purpose. React's behavior around effects and rendering only makes sense once you know what runs underneath it. From here on, every project calls a mocked API built with [Mock Service Worker (MSW)](https://mswjs.io/).",
+   "topics": [
+    {
+     "id": "w5",
+     "week": 5,
+     "title": "JavaScript internals",
+     "time": "10 hours",
+     "purpose": "Read any JavaScript and predict what it does, including `this`, closures, and memory. Most “weird” bugs come from these rules.",
+     "prereq": "Basic JavaScript syntax.",
+     "skip": "Implement `debounce`, `memoize`, and `Function.prototype.bind` from scratch, with tests, in under 45 minutes.",
+     "concepts": "execution contexts, scope chain, hoisting and the temporal dead zone; closures and what they keep alive; the four `this` rules plus arrow functions; prototypes and `class` as syntax over them; equality and coercion; value vs reference, shallow vs deep copy (`structuredClone`); iterators and generators; modules (ESM vs CommonJS, live bindings); garbage collection and common leaks (detached DOM nodes, forgotten listeners, growing caches).",
+     "project": "A small, tested utility library: `debounce` (with leading/trailing and `cancel`), `throttle`, `memoize` with an LRU limit, a typed `EventEmitter` with `once` and unsubscribe, and `deepEqual`. Use Vitest and write the tests first.",
+     "exercise": "Create a memory leak on purpose (a listener on `window` that holds a closure over a large array, registered on every “page” view). Find it with a DevTools heap snapshot comparison, fix it, and prove the fix.",
+     "hint": "take three snapshots (before, after five navigations, after cleanup) and compare the retained size.",
+     "questions": [
+      "What does a closure capture, and how can that cause a stale value or a memory leak?",
+      "Explain what `this` is inside a regular function passed as a callback, and three ways to control it.",
+      "Why do ES module imports behave like live bindings, and when does that matter?"
+     ],
+     "resources": [
+      [
+       "javascript.info",
+       "https://javascript.info/"
+      ],
+      [
+       "You Don't Know JS Yet",
+       "https://github.com/getify/You-Dont-Know-JS"
+      ],
+      [
+       "Chrome DevTools memory docs",
+       "https://developer.chrome.com/docs/devtools/memory-problems"
+      ]
+     ],
+     "tasks": [
+      "Utility library at 100% test coverage",
+      "Memory leak found and fixed",
+      "Explainer on closures"
+     ]
+    },
+    {
+     "id": "w6",
+     "week": 6,
+     "title": "Asynchronous JavaScript and the event loop",
+     "time": "10 hours",
+     "gap": true,
+     "purpose": "Predict execution order exactly, and control concurrency, cancellation, and failure in real request flows.",
+     "prereq": "Week 5.",
+     "skip": "Get assessment question 3 right with an explanation, then write a `promisePool(tasks, limit)` that runs at most N tasks at once, in 30 minutes.",
+     "concepts": "the call stack; task (macrotask) queue vs microtask queue; when microtasks drain; how `async`/`await` turns into promises (the code before the first `await` runs synchronously); `requestAnimationFrame` and where it sits in the frame; `Promise.all`, `allSettled`, `race`, `any`; error propagation and unhandled rejections; `AbortController` and `AbortSignal.timeout()`; races, debouncing, and “latest request wins”; retries with exponential backoff and jitter.",
+     "project": "A vanilla search-as-you-type station finder against an MSW endpoint that adds random delays of 100–1,500 ms and fails 10% of the time. Requirements: debounced input, cancellation of stale requests, a loading state that doesn't flicker, retry with backoff, and an accessible live-region status message.",
+     "exercise": "Write ten event-loop puzzles of your own (with `setTimeout`, promises, `queueMicrotask`, `await`, and `requestAnimationFrame`), predict each output, then run them. Explain every miss in one sentence.",
+     "hint": "for each line, ask “which queue does this callback go into, and when is that queue drained?”",
+     "questions": [
+      "What's the difference between a microtask and a task, and why can an infinite microtask loop freeze the page while a `setTimeout` loop doesn't?",
+      "How would you make sure only the latest search response updates the UI?",
+      "When would you use `Promise.allSettled` instead of `Promise.all`?"
+     ],
+     "resources": [
+      [
+       "MDN microtask guide",
+       "https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API/Microtask_guide"
+      ],
+      [
+       "javascript.info event loop",
+       "https://javascript.info/event-loop"
+      ]
+     ],
+     "resourceNote": "Jake Archibald's talk “In The Loop” (JSConf Asia 2018).",
+     "tasks": [
+      "Station finder handles races, failures, and retries",
+      "Ten puzzles done",
+      "Bug write-up of a race condition"
+     ]
+    },
+    {
+     "id": "w7",
+     "week": 7,
+     "title": "Browser rendering",
+     "time": "10 hours",
+     "gap": true,
+     "purpose": "Know what the browser does between your code running and pixels appearing, and use the Performance panel to find what's slow. This is the skill assessment question 5 asked for.",
+     "prereq": "Weeks 3 and 6.",
+     "skip": "Record a profile of a janky page, point to the long task, name the function responsible, and say whether the cost is scripting, style, layout, or paint.",
+     "concepts": "the critical rendering path (HTML parse, CSSOM, render tree); style, layout, paint, composite; reflow triggers and forced synchronous layout (layout thrashing); compositor-only properties (`transform`, `opacity`); long tasks (over 50 ms) and why they hurt input responsiveness; yielding to the main thread (`scheduler.yield()` where supported, or `setTimeout` chunking); `content-visibility`; Web Workers; render-blocking CSS and parser-blocking scripts (`defer`, `async`, `type=“module”`).",
+     "project": "Render a 5,000-row bike-inventory table from mocked data with filters, written badly on purpose first (rebuild the whole table on each keystroke, read `offsetHeight` inside the loop). Profile it, then fix it in three separate commits: batch DOM writes, remove the forced layout, then virtualize the list. Record the numbers before and after each step.",
+     "exercise": "Move the filtering and sorting into a Web Worker and measure whether it actually helps. Write up when the cost of copying data to the worker outweighs the benefit.",
+     "hint": "measure with `performance.mark`/`measure`, and try both 5,000 and 100,000 rows.",
+     "questions": [
+      "What is layout thrashing, and how do you find it in a profile?",
+      "Why is animating `transform` cheaper than animating `top`?",
+      "A click handler takes 300 ms. What are three ways to make the page feel responsive again?"
+     ],
+     "resources": [
+      [
+       "Inside look at modern web browser",
+       "https://developer.chrome.com/blog/inside-browser-part1"
+      ],
+      [
+       "Chrome DevTools Performance panel",
+       "https://developer.chrome.com/docs/devtools/performance"
+      ],
+      [
+       "web.dev rendering performance",
+       "https://web.dev/articles/rendering-performance"
+      ]
+     ],
+     "tasks": [
+      "Table profiled and fixed in three measured commits",
+      "Worker experiment written up"
+     ]
+    },
+    {
+     "id": "w8",
+     "week": 8,
+     "title": "Networking for front-end engineers",
+     "time": "10 hours, including the month review",
+     "purpose": "Understand what happens to a request between `fetch()` and the response, so you can debug CORS, caching, and slow loads without guessing.",
+     "prereq": "Week 6.",
+     "skip": "Explain why a request triggers a CORS preflight, and read a site's `Cache-Control` headers to say what gets cached, where, and for how long.",
+     "concepts": "DNS, TCP, TLS, and HTTP/2 vs HTTP/3 at a conceptual level; request and response headers; HTTP caching (`Cache-Control` directives, `ETag` and `304`, `stale-while-revalidate`, immutable hashed assets); CDNs; CORS and preflight; cookies (`SameSite`, `Secure`, `HttpOnly`); resource hints (`preconnect`, `preload`, `fetchpriority`); compression; Service Workers and cache strategies; REST vs GraphQL from the client's side; reading a waterfall.",
+     "project": "Add a Service Worker to the station finder with two strategies: cache-first for static assets and stale-while-revalidate for the station list, plus an offline fallback page. Separately, write a one-page analysis of the network waterfall and caching headers of three production sites you use.",
+     "exercise": "Write a typed `apiClient` wrapper used by every later project: timeouts, retries only for idempotent requests, `AbortSignal` support, normalized error objects (network, HTTP, parse), and request deduplication.",
+     "hint": "decide which errors are retryable and justify each one in a comment.",
+     "questions": [
+      "Walk me through what happens when someone types a URL and presses Enter. Go as deep as you can.",
+      "How would you cache a hashed JS bundle compared with the HTML page that loads it?",
+      "A request works in Postman but fails in the browser with a CORS error. Why, and who fixes it?"
+     ],
+     "resources": [
+      [
+       "High Performance Browser Networking (free online)",
+       "https://hpbn.co/"
+      ],
+      [
+       "MDN HTTP caching",
+       "https://developer.mozilla.org/en-US/docs/Web/HTTP/Caching"
+      ],
+      [
+       "MDN CORS",
+       "https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS"
+      ],
+      [
+       "web.dev Service Worker caching strategies",
+       "https://web.dev/articles/offline-cookbook"
+      ]
+     ],
+     "tasks": [
+      "Service Worker shipped",
+      "`apiClient` done",
+      "Waterfall analysis written",
+      "Month 2 checkpoint completed"
+     ]
+    }
+   ],
+   "milestone": [
+    "You predict the output of 10 out of 10 new event-loop puzzles that I give you.",
+    "In the station finder, a stale response never renders. Prove it with a test that resolves responses out of order.",
+    "Filtering 5,000 rows produces no long task over 50 ms on a desktop CPU at 4x throttling. Include a before-and-after profile screenshot.",
+    "The station list loads offline after the first visit.",
+    "`apiClient` has unit tests for timeout, abort, retry, and each normalized error type."
+   ],
+   "checkpoint": "Re-answer assessment questions 3, 4 (without React: describe the race in plain JavaScript), and 5. Then present your table performance fixes to me as a 5-minute talk with your profiles as evidence."
+  },
+  {
+   "id": "m3",
+   "n": 3,
+   "weeks": "9–12",
+   "title": "TypeScript, React, and Next.js in depth",
+   "theme": "Types and React",
+   "intro": "This month you rebuild what you made in vanilla JavaScript, now with types and a framework, so you can see exactly what each abstraction adds and what it costs. Testing starts here and continues in every later week.",
+   "topics": [
+    {
+     "id": "w9",
+     "week": 9,
+     "title": "TypeScript",
+     "time": "10 hours",
+     "purpose": "Use types to make invalid states impossible to represent, and validate data at the edges where types can't reach at runtime.",
+     "prereq": "Week 5.",
+     "skip": "Write a generic `groupBy<T, K extends PropertyKey>()` and model an API result as a discriminated union (`idle | loading | success | error`) that the compiler forces callers to handle exhaustively. You have 30 minutes.",
+     "concepts": "structural typing; narrowing (`typeof`, `in`, discriminants, type predicates); unions and discriminated unions; exhaustiveness with `never`; generics and constraints; `keyof`, indexed access, mapped and conditional types, `infer`; template literal types; `satisfies`; `unknown` vs `any`; strict tsconfig flags (`strict`, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`); runtime validation at boundaries with a schema library such as Zod or Valibot.",
+     "project": "Convert the month 2 utilities and `apiClient` to strict TypeScript. Add schema validation for every mocked API response, so a malformed response becomes a typed error instead of a crash three components later.",
+     "exercise": "Build a typed route helper: `buildPath('/bikes/:id/repairs/:repairId', { id, repairId })` should be a compile error if a parameter is missing or misspelled.",
+     "hint": "template literal types with `infer`, applied recursively.",
+     "questions": [
+      "Why use `unknown` instead of `any` for data from an API, and what do you do next?",
+      "How do discriminated unions prevent bugs in UI state?",
+      "Types are erased at runtime. Where does that bite you, and how do you defend against it?"
+     ],
+     "resources": [
+      [
+       "TypeScript Handbook",
+       "https://www.typescriptlang.org/docs/handbook/intro.html"
+      ],
+      [
+       "Total TypeScript free tutorials",
+       "https://www.totaltypescript.com/tutorials"
+      ],
+      [
+       "type-challenges",
+       "https://github.com/type-challenges/type-challenges"
+      ],
+      [
+       "Zod",
+       "https://zod.dev/"
+      ]
+     ],
+     "tasks": [
+      "Everything in strict TypeScript",
+      "Schema validation added",
+      "Route helper type built"
+     ]
+    },
+    {
+     "id": "w10",
+     "week": 10,
+     "title": "React's rendering model and effects",
+     "time": "10 hours",
+     "gap": true,
+     "purpose": "Explain when and why a component re-renders, and use effects only to synchronize with outside systems. This is the root of assessment question 4.",
+     "prereq": "Weeks 6 and 9.",
+     "skip": "Fix assessment question 4 in two ways, explain why React's StrictMode runs effects twice in development, and refactor two unnecessary effects out of a component I give you.",
+     "concepts": "render vs commit; state as a snapshot; batching; reconciliation, keys, and component identity (why a key change resets state); purity; when re-renders happen and when `memo` helps; effects as synchronization (setup, cleanup, dependencies); stale closures; “you might not need an effect” (derived state, event handlers); refs; controlled vs uncontrolled inputs; Suspense and error boundaries; the React 19 Actions APIs (`useActionState`, `useOptimistic`); what the React Compiler automates and what it doesn't.",
+     "project": "Rebuild the station finder in React and TypeScript. Fix the race condition with an `ignore` flag in the effect cleanup, then with `AbortController`. Write a short ADR comparing both and a data-fetching library.",
+     "exercise": "Use the React DevTools Profiler on a list of 1,000 bike cards where typing in an unrelated input re-renders every card. Find the cause and fix it three ways: move state down, pass children as props, and `memo`. Measure each one.",
+     "hint": "“Highlight updates when components render” shows you where to look before the Profiler tells you how much it costs.",
+     "questions": [
+      "What actually causes a component to re-render? Correct the common myth that “props changing” is the cause.",
+      "Describe a bug caused by a stale closure in an effect and two ways to fix it.",
+      "When is an effect the wrong tool? Give two examples and what to use instead."
+     ],
+     "resources": [
+      [
+       "react.dev Learn",
+       "https://react.dev/learn"
+      ],
+      [
+       "Synchronizing with Effects (includes the fetch race)",
+       "https://react.dev/learn/synchronizing-with-effects"
+      ],
+      [
+       "You Might Not Need an Effect",
+       "https://react.dev/learn/you-might-not-need-an-effect"
+      ]
+     ],
+     "tasks": [
+      "React station finder with both race fixes",
+      "ADR on fetching",
+      "Profiler exercise measured"
+     ]
+    },
+    {
+     "id": "w11",
+     "week": 11,
+     "title": "Server state in React, and testing UI behavior",
+     "time": "10 hours",
+     "gap": true,
+     "purpose": "Separate server state (a cache of data someone else owns) from UI state, and write tests that check behavior a user sees rather than implementation details.",
+     "prereq": "Week 10.",
+     "skip": "Write a test that fails on the original assessment question 4 code and passes after your fix, using controlled response ordering.",
+     "concepts": "server state vs client state; a query cache (stale time, cache time, deduplication, background refetch, invalidation, polling, optimistic updates with rollback) using TanStack Query or SWR; Vitest and Testing Library; querying by role and accessible name; `findBy` vs `waitFor`; `user-event`; fake timers; MSW in tests; what not to test.",
+     "project": "A React bike-inventory page using a query library. It polls bike status every 10 seconds, has a “send to maintenance” mutation with an optimistic update that rolls back on failure, and handles loading, empty, and error states. Write at least 12 tests covering each state.",
+     "exercise": "Reproduce the out-of-order race deterministically in a test.",
+     "hint": "in the MSW handler, return a promise you control, so the test decides which response arrives first.",
+     "questions": [
+      "Why is putting API data in a global client store often a mistake?",
+      "Walk me through an optimistic update, including the failure path.",
+      "What makes a UI test brittle, and how does querying by role help?"
+     ],
+     "resources": [
+      [
+       "TanStack Query docs",
+       "https://tanstack.com/query/latest/docs/framework/react/overview"
+      ],
+      [
+       "Testing Library docs",
+       "https://testing-library.com/docs/"
+      ],
+      [
+       "Common mistakes with React Testing Library",
+       "https://kentcdodds.com/blog/common-mistakes-with-react-testing-library"
+      ],
+      [
+       "MSW docs",
+       "https://mswjs.io/docs/"
+      ]
+     ],
+     "tasks": [
+      "Inventory page with polling and optimistic updates",
+      "12+ tests",
+      "Deterministic race test"
+     ]
+    },
+    {
+     "id": "w12",
+     "week": 12,
+     "title": "Next.js and rendering strategies",
+     "time": "10 hours, including the month review",
+     "purpose": "Pick where and when each part of a page renders (server, client, build time, request time), and understand the costs and caching behavior of each choice.",
+     "prereq": "Weeks 8 and 11.",
+     "skip": "Explain the difference between Server and Client Components, what can cross the boundary, and the cause of a hydration error I give you.",
+     "concepts": "CSR, SSR, SSG, incremental revalidation, and streaming; the App Router; Server vs Client Components and the `'use client'` boundary; serializable props; data fetching and caching, which changes between major versions, so read the docs for the version you install; Route Handlers (used here as your mocked API); Server Actions; `loading` and `error` files with Suspense; metadata; image and font optimization; hydration and its mismatches; edge vs Node runtimes at a conceptual level.",
+     "project": "Port the inventory app to Next.js App Router. The list page renders on the server, with filters read from the URL search params. Bike detail pages are generated statically and revalidated. A slow “maintenance forecast” widget streams in behind Suspense. Mock data lives in Route Handlers that read JSON fixtures.",
+     "exercise": "Introduce three hydration mismatches (a `Date.now()` render, locale-dependent formatting, a `typeof window` branch) and fix each one properly.",
+     "hint": "compare the server HTML from View Source with what the client renders.",
+     "questions": [
+      "How do you decide between static generation, server rendering on each request, and client rendering for a page?",
+      "What does a Server Component let you do that a Client Component can't, and what's the reverse?",
+      "What causes hydration errors, and how do you avoid them?"
+     ],
+     "resources": [
+      [
+       "Next.js docs",
+       "https://nextjs.org/docs"
+      ],
+      [
+       "Next.js Learn course",
+       "https://nextjs.org/learn"
+      ],
+      [
+       "patterns.dev rendering patterns",
+       "https://www.patterns.dev/react/"
+      ]
+     ],
+     "tasks": [
+      "Next.js app with server list, static detail, streaming widget",
+      "Hydration fixes",
+      "Month 3 checkpoint completed"
+     ]
+    }
+   ],
+   "milestone": [
+    "`tsc --noEmit` passes with `strict` and `noUncheckedIndexedAccess`. A lint rule bans explicit `any`.",
+    "The race-condition test fails on the buggy version and passes on the fix, proven in two commits.",
+    "At least 15 component tests, all querying by role or label, with none using `getByTestId` unless you justify it in a comment.",
+    "Filters live in the URL: a copied link reproduces the same view.",
+    "The browser console shows no hydration warnings or React key warnings.",
+    "One ADR on data fetching and one on rendering strategy are written."
+   ],
+   "checkpoint": "Re-answer assessment question 4 in full, including the test, and the URL and API-cache parts of question 7. Then explain to me, in a 300-word explainer, why your list page is server-rendered and your detail page is static."
+  },
+  {
+   "id": "m4",
+   "n": 4,
+   "weeks": "13–16",
+   "title": "Performance, security, and testing strategy",
+   "theme": "Quality",
+   "intro": "This month you measure before you optimize, threat-model before you patch, and choose which tests to write based on risk. All of it applies to the Next.js inventory app from month 3, so every change shows up as a number.",
+   "topics": [
+    {
+     "id": "w13",
+     "week": 13,
+     "title": "Measuring performance",
+     "time": "10 hours",
+     "gap": true,
+     "purpose": "Know which number to trust and why. This is assessment question 6. A fix you can't measure is a guess.",
+     "prereq": "Weeks 7, 8, and 12.",
+     "skip": "Answer assessment question 6 in full, and break one LCP down into its four subparts using DevTools.",
+     "concepts": "lab data vs field data (real-user monitoring, or RUM); why they disagree (device, network, cache state, geography, user behavior, simulated throttling); percentiles, with Core Web Vitals judged at the 75th; the thresholds for “good” (LCP ≤ 2.5 s, INP ≤ 200 ms, CLS ≤ 0.1); LCP subparts (time to first byte, resource load delay, resource load time, render delay); INP phases (input delay, processing, presentation delay); layout shift sources; the Chrome UX Report; the `web-vitals` library and `PerformanceObserver`; User Timing marks; run-to-run variance, so you take the median of 5 or more runs; performance budgets.",
+     "project": "Add RUM to the Next.js app with the `web-vitals` library. Send each metric with route and device-class attribution to a mocked analytics Route Handler that keeps results in memory, and build an internal `/perf` page showing the 75th percentile per route. Add Lighthouse CI with budgets that fail the build.",
+     "exercise": "Write a one-page “lab vs field” report: run Lighthouse 5 times with and without throttling, compare with your simulated RUM data, and explain each gap.",
+     "hint": "sort your explanations into “different conditions” and “different users”.",
+     "questions": [
+      "Lighthouse says 98 and users say the site is slow. What's going on, and what do you do?",
+      "Why are Web Vitals reported at the 75th percentile and not the average?",
+      "How would you find out which part of LCP is slow on a given page?"
+     ],
+     "resources": [
+      [
+       "web.dev Web Vitals",
+       "https://web.dev/articles/vitals"
+      ],
+      [
+       "Optimize LCP",
+       "https://web.dev/articles/optimize-lcp"
+      ],
+      [
+       "Interaction to Next Paint",
+       "https://web.dev/articles/inp"
+      ],
+      [
+       "web-vitals library",
+       "https://github.com/GoogleChrome/web-vitals"
+      ],
+      [
+       "Lighthouse CI",
+       "https://github.com/GoogleChrome/lighthouse-ci"
+      ]
+     ],
+     "tasks": [
+      "RUM pipeline and `/perf` page",
+      "Lighthouse CI with budgets",
+      "Lab vs field report"
+     ]
+    },
+    {
+     "id": "w14",
+     "week": 14,
+     "title": "Optimizing performance",
+     "time": "10 hours",
+     "purpose": "Fix the biggest measured cost first, and know what each optimization costs you in complexity.",
+     "prereq": "Week 13.",
+     "skip": "Cut the app's initial JavaScript by 30% and show the bundle analyzer before and after.",
+     "concepts": "bundle analysis; code splitting and `import()`; tree shaking and side effects; preferring server rendering over shipping JavaScript; images (formats, `sizes`, priority hints, lazy loading below the fold only); fonts (`font-display`, preloading, subsetting, fallback metric overrides to avoid layout shift); third-party scripts (facades, deferral, load on interaction); INP fixes (smaller handlers, yielding, `useTransition` and `useDeferredValue`, virtualization); prefetching and its bandwidth cost; caching in your deployment.",
+     "project": "Get the inventory app inside a budget you set and enforce in CI: initial JS ≤ 170 KB compressed, LCP ≤ 2.5 s and CLS ≤ 0.1 on mobile emulation (Slow 4G, 4x CPU slowdown, median of 5 runs). Log each change with its measured effect.",
+     "exercise": "Add a heavy charting library and a fake third-party chat widget, then get back under budget without removing either feature.",
+     "hint": "not everything has to load on first paint. What does the user need in the first 3 seconds?",
+     "questions": [
+      "You have one sprint to improve a slow product page. How do you decide what to fix first?",
+      "When does lazy loading make performance worse?",
+      "How do you keep a performance budget from being ignored six months later?"
+     ],
+     "resources": [
+      [
+       "web.dev Fast load times",
+       "https://web.dev/explore/fast"
+      ],
+      [
+       "Optimize INP",
+       "https://web.dev/articles/optimize-inp"
+      ],
+      [
+       "web.dev third-party JavaScript",
+       "https://web.dev/articles/optimizing-content-efficiency-loading-third-party-javascript"
+      ]
+     ],
+     "tasks": [
+      "App within budget",
+      "Optimization log with measured effects",
+      "Heavy-feature exercise"
+     ]
+    },
+    {
+     "id": "w15",
+     "week": 15,
+     "title": "Front-end security",
+     "time": "6 hours if you pass the skip check, 10 if you don't",
+     "purpose": "Defend the browser side against cross-site scripting, request forgery, and supply-chain risks, and know the limits of what the front end can enforce. This is your strongest area, so it's compressed, with a skip check.",
+     "prereq": "Weeks 8 and 12.",
+     "skip": "Answer assessment question 8 in full, without help, covering sanitization, CSP, the cookie flags, and CSRF. Then configure a Content Security Policy that blocks inline scripts in the Next.js app.",
+     "concepts": "stored, reflected, and DOM-based XSS; what React escapes and its escape hatches (`dangerouslySetInnerHTML`, `javascript:` URLs, refs with `innerHTML`); sanitizing with an allow-list library such as DOMPurify instead of regex; Content Security Policy with nonces; Trusted Types; CSRF and how `SameSite` cookies reduce it; token storage tradeoffs (an `HttpOnly` cookie vs memory vs `localStorage`); why CORS isn't authorization; clickjacking and `frame-ancestors`; open redirects; secrets accidentally shipped in client bundles (for example, public environment variables); dependency risk (lockfiles, audits, review before adding a package); security headers.",
+     "project": "Add user-written Markdown bios to the app, rendered safely. Add a CSP with nonces plus the standard security headers in Next.js middleware, and a mocked login Route Handler that sets an `HttpOnly`, `Secure`, `SameSite=Lax` session cookie. Write a one-page threat model: assets, entry points, threats, mitigations, and what the front end can't protect.",
+     "exercise": "Run the test vectors from the OWASP XSS prevention and filter-evasion cheat sheets against your own bio renderer and confirm every one is neutralized. Then check whether your CSP would still stop an injected script if sanitization failed.",
+     "hint": "defense in depth means each layer should hold even when the other one fails.",
+     "questions": [
+      "React escapes output by default. How can a React app still have XSS?",
+      "Compare storing an auth token in `localStorage` with an `HttpOnly` cookie. What does each protect against, and what does each expose?",
+      "What does a CSP protect against, and why is `'unsafe-inline'` a problem?"
+     ],
+     "resources": [
+      [
+       "OWASP Cheat Sheet Series (XSS prevention, CSRF prevention, CSP)",
+       "https://cheatsheetseries.owasp.org/"
+      ],
+      [
+       "MDN Content Security Policy",
+       "https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP"
+      ],
+      [
+       "DOMPurify",
+       "https://github.com/cure53/DOMPurify"
+      ],
+      [
+       "web.dev Trusted Types",
+       "https://web.dev/articles/trusted-types"
+      ]
+     ],
+     "tasks": [
+      "Safe Markdown bios",
+      "CSP and headers",
+      "Mocked cookie session",
+      "Threat model"
+     ]
+    },
+    {
+     "id": "w16",
+     "week": 16,
+     "title": "Testing strategy and automated accessibility",
+     "time": "10 hours, including the month review",
+     "purpose": "Choose which tests to write based on risk and cost, and make them reliable enough that the team trusts a red build.",
+     "prereq": "Weeks 2 and 11.",
+     "skip": "Write a one-page test strategy for an app I describe, naming what you'd test at each level and what you'd deliberately not test.",
+     "concepts": "the test pyramid vs the testing trophy, and the cost and confidence of each level; static analysis as the cheapest test; unit, integration, and end-to-end tests; Playwright with mocked network routes; automated accessibility scans (`@axe-core/playwright`) and their limits; keyboard-only end-to-end flows; visual regression snapshots; contract safety by sharing schemas between mocks and code; flaky tests (timing, shared state, animations, test order); coverage as a signal rather than a goal; mutation testing as a quality check on your tests.",
+     "project": "Write a test strategy for the inventory app. Add 5 Playwright end-to-end tests for the critical flows (log in, filter, open detail, send to maintenance, error recovery), an axe scan on every page, a keyboard-only test of the modal, and visual snapshots of three key screens.",
+     "exercise": "Write a flaky test on purpose, then diagnose and fix it without adding retries or arbitrary waits. Run mutation testing (Stryker) on your utility library and kill the surviving mutants.",
+     "hint": "the Playwright trace viewer shows you what the page looked like at the moment of failure.",
+     "questions": [
+      "How do you decide whether something deserves an end-to-end test or a component test?",
+      "A test fails 1 time in 20 on CI. Walk me through finding the cause.",
+      "90% coverage, and production still broke. How is that possible?"
+     ],
+     "resources": [
+      [
+       "Playwright docs",
+       "https://playwright.dev/docs/intro"
+      ],
+      [
+       "Playwright accessibility testing",
+       "https://playwright.dev/docs/accessibility-testing"
+      ],
+      [
+       "The Practical Test Pyramid",
+       "https://martinfowler.com/articles/practical-test-pyramid.html"
+      ],
+      [
+       "The Testing Trophy",
+       "https://kentcdodds.com/blog/the-testing-trophy-and-testing-classifications"
+      ],
+      [
+       "Stryker Mutator",
+       "https://stryker-mutator.io/"
+      ]
+     ],
+     "tasks": [
+      "Test strategy doc",
+      "5 E2E flows",
+      "Axe on every page",
+      "Flake fixed",
+      "Month 4 checkpoint completed"
+     ]
+    }
+   ],
+   "milestone": [
+    "Lighthouse CI fails the build when a budget is exceeded. Show one failing PR and its fix.",
+    "Mobile emulation, median of 5 runs: LCP ≤ 2.5 s, CLS ≤ 0.1, initial JS ≤ 170 KB compressed.",
+    "No interaction in the DevTools Performance panel takes longer than 200 ms at 4x CPU slowdown.",
+    "The CSP is enforced, not report-only, with no `'unsafe-inline'` for scripts, and every OWASP test vector is neutralized.",
+    "E2E tests pass 20 consecutive runs locally with no retries, and the axe scans report 0 violations.",
+    "The mutation score on the utility library is at least 80%."
+   ],
+   "checkpoint": "Re-answer assessment questions 5, 6, and 8. Then do a 30-minute mock interview with me on performance and security, where I play the interviewer and grade each answer."
+  },
+  {
+   "id": "m5",
+   "n": 5,
+   "weeks": "17–21",
+   "title": "Architecture, design systems, and shipping",
+   "theme": "Architecture",
+   "intro": "This month moves from “does it work” to “can a team keep changing it safely”. Every week produces a written decision. That writing is the senior-level skill, more than any library.",
+   "topics": [
+    {
+     "id": "w17",
+     "week": 17,
+     "title": "State management",
+     "time": "10 hours",
+     "purpose": "Put each piece of state where its owner and lifetime say it belongs, so the app has one source of truth per fact. This is assessment question 7.",
+     "prereq": "Weeks 10–12.",
+     "skip": "Answer assessment question 7 in full, giving a location, an owner, and a tradeoff for each of the five pieces of state. You can do this in your week 15 hours if you passed that skip check.",
+     "concepts": "kinds of state (local UI, shared UI, server cache, URL, form, persisted, session); colocation and lifting state; derived state, never stored twice; Context and its re-render cost; external stores (Zustand, Redux Toolkit, Jotai) and when they earn their place; selectors; reducers and explicit state machines for multi-step flows; persistence with schema versions and migrations; cross-tab sync (`BroadcastChannel`, the `storage` event).",
+     "project": "Write a state map for the inventory app: a table listing each piece of state, its owner, where it lives, its lifetime, and who reads it. Then implement it: user profile from the query cache (not a global store), saved filter presets in `localStorage` with a versioned schema, and a multi-step “repair ticket” wizard modeled as a state machine with a draft that survives a refresh.",
+     "exercise": "Sync the repair-ticket draft across two open tabs and handle the conflict when both tabs edit it.",
+     "hint": "decide on a conflict rule first (last write wins, or ask the user), then add a version number to every save.",
+     "questions": [
+      "How do you decide between local state, Context, a store library, the URL, and a server cache?",
+      "Why can a single large Context cause performance problems, and what are the alternatives?",
+      "When does an explicit state machine pay for its extra code?"
+     ],
+     "resources": [
+      [
+       "react.dev Managing State",
+       "https://react.dev/learn/managing-state"
+      ],
+      [
+       "TkDodo's blog (React Query and state articles)",
+       "https://tkdodo.eu/blog/"
+      ],
+      [
+       "Stately (XState) docs",
+       "https://stately.ai/docs"
+      ],
+      [
+       "Zustand",
+       "https://github.com/pmndrs/zustand"
+      ]
+     ],
+     "tasks": [
+      "State map written and implemented",
+      "Wizard state machine",
+      "Cross-tab draft sync"
+     ]
+    },
+    {
+     "id": "w18",
+     "week": 18,
+     "title": "Front-end architecture",
+     "time": "10 hours",
+     "purpose": "Structure code so features can change independently, dependencies point one way, and decisions are written down where the next engineer will find them.",
+     "prereq": "Week 17.",
+     "skip": "Draw the dependency graph of an app you work on and identify two places where a change in one feature forces a change in another.",
+     "concepts": "cohesion and coupling; feature-based folders; dependency direction (UI → application logic → infrastructure such as the API client); enforcing boundaries with lint rules; composition patterns (compound components, headless hooks, slots and children); an API layer that hides transport details; an error-handling strategy (error boundaries, user-facing messages, logging); feature flags; monorepo vs multiple repos; micro-frontends and the problems they solve and create; ADRs and RFCs; C4 diagrams.",
+     "project": "Restructure the inventory app into feature modules, with lint-enforced import rules (for example, features can't import from each other's internals). Write an architecture overview with a C4 context diagram and container diagram, and three ADRs.",
+     "exercise": "Write a two-page RFC for a requirement change: the app must support several rental companies, each with its own branding, languages, and feature set.",
+     "hint": "list what changes, what must not change, the options, and the migration path before you pick an option.",
+     "questions": [
+      "How would you structure a front-end codebase for five teams working in parallel?",
+      "When are micro-frontends worth their cost?",
+      "Tell me about a technical decision you'd make differently now, and how you'd write it up."
+     ],
+     "resources": [
+      [
+       "Bulletproof React",
+       "https://github.com/alan2207/bulletproof-react"
+      ],
+      [
+       "Micro Frontends by Cam Jackson",
+       "https://martinfowler.com/articles/micro-frontends.html"
+      ],
+      [
+       "ADR resources",
+       "https://adr.github.io/"
+      ],
+      [
+       "The C4 model",
+       "https://c4model.com/"
+      ]
+     ],
+     "tasks": [
+      "Feature modules with enforced boundaries",
+      "C4 diagrams",
+      "3 ADRs",
+      "Multi-tenant RFC"
+     ]
+    },
+    {
+     "id": "w19",
+     "week": 19,
+     "title": "Design systems",
+     "time": "10 hours",
+     "purpose": "Build components that are accessible, themeable, and consistent by default, with APIs that other engineers find hard to misuse.",
+     "prereq": "Weeks 2, 4, and 18.",
+     "skip": "Design the props API for a `Button` and a `Select`, covering variants, sizes, loading and disabled states, icons, polymorphism, and ref forwarding, and justify each choice.",
+     "concepts": "design tokens in layers (primitive → semantic → component); theming with CSS custom properties; component API design (variants, composition over configuration, controlled and uncontrolled support, refs, polymorphic `as`); accessibility built in; headless libraries (React Aria, Radix) vs building your own; Storybook for documentation and interaction tests; visual regression; semantic versioning, changelogs, and deprecation.",
+     "project": "Extract a design system package from the app: tokens with light and dark themes, plus `Button`, `TextField`, `Select`, `Dialog`, `Tabs`, `Table`, and `Toast`. Each one has Storybook stories, the accessibility add-on passing, and an interaction test for its keyboard behavior.",
+     "exercise": "Write an RFC for a `Table` API that supports sorting, row selection, and virtualization. Compare a configuration-object API with a composition API, then build the one you choose.",
+     "hint": "look at how TanStack Table separates the logic from the markup.",
+     "questions": [
+      "How do you design a component API that's flexible without becoming unmaintainable?",
+      "When would you build components on a headless library instead of writing them from scratch?",
+      "How do you roll out a breaking change to a component used in 200 places?"
+     ],
+     "resources": [
+      [
+       "Storybook docs",
+       "https://storybook.js.org/docs"
+      ],
+      [
+       "Design Tokens Community Group",
+       "https://www.designtokens.org/"
+      ],
+      [
+       "React Aria",
+       "https://react-spectrum.adobe.com/react-aria/"
+      ],
+      [
+       "Radix Primitives",
+       "https://www.radix-ui.com/primitives"
+      ],
+      [
+       "TanStack Table",
+       "https://tanstack.com/table/latest"
+      ]
+     ],
+     "tasks": [
+      "Design system package with 7 components in Storybook",
+      "Table RFC and build"
+     ]
+    },
+    {
+     "id": "w20",
+     "week": 20,
+     "title": "Tooling and CI/CD",
+     "time": "10 hours",
+     "purpose": "Turn every quality bar from months 1–4 into an automated gate, so quality doesn't depend on someone remembering to check.",
+     "prereq": "Weeks 13, 16, and 19.",
+     "skip": "Set up a GitHub Actions workflow that runs lint, typecheck, and unit tests with dependency caching, in under an hour.",
+     "concepts": "package managers and lockfiles; workspaces (for example, [pnpm workspaces](https://pnpm.io/workspaces)); transpiling vs bundling; dev servers and production builds (Vite, the Next.js build); ESLint and Prettier; git hooks; CI pipeline design (fast checks first, parallel jobs, caching, artifacts); required checks and branch protection; preview deployments per PR; automated dependency updates; versioning with Changesets.",
+     "project": "A CI pipeline that runs on every PR: install with cache, lint, typecheck, unit and component tests, build, Playwright end-to-end with axe, Lighthouse CI budgets, a bundle-size check that comments on the PR, and a preview deployment. Make the required checks block merging.",
+     "exercise": "Halve the pipeline's wall-clock time and prove it with run timings.",
+     "hint": "find the critical path first. Parallelizing a job that isn't on it saves nothing.",
+     "questions": [
+      "What should run on every PR, and what should only run nightly? Justify the split.",
+      "How do you keep CI fast as the codebase grows?",
+      "A dependency update breaks production. What in your pipeline should have caught it?"
+     ],
+     "resources": [
+      [
+       "GitHub Actions docs",
+       "https://docs.github.com/en/actions"
+      ],
+      [
+       "Vite guide",
+       "https://vite.dev/guide/"
+      ],
+      [
+       "Changesets",
+       "https://github.com/changesets/changesets"
+      ],
+      [
+       "Lighthouse CI",
+       "https://github.com/GoogleChrome/lighthouse-ci"
+      ]
+     ],
+     "tasks": [
+      "Full CI pipeline with required checks",
+      "Pipeline time halved"
+     ]
+    },
+    {
+     "id": "w21",
+     "week": 21,
+     "title": "Deployment and monitoring",
+     "time": "10 hours, including the month review",
+     "purpose": "Ship safely, find out about problems before users report them, and recover quickly.",
+     "prereq": "Week 20.",
+     "skip": "Explain how you'd roll back a bad front-end release in under 5 minutes, and what must be true about your caching for that to work.",
+     "concepts": "hosting models (static on a CDN, serverless, edge, containers); environments and environment variables; preview, staging, and production; atomic deploys and rollbacks; cache invalidation on deploy; feature flags and gradual rollout; source maps uploaded privately; error tracking with context and without personal data; RUM dashboards; service-level objectives (SLOs) and alerting on user impact; incident response and blameless postmortems.",
+     "project": "Deploy the app on a free hosting tier (Vercel, Netlify, or Cloudflare Pages) with preview deployments. Add error tracking (for example, Sentry's free tier) with private source maps and release tags, and write a release checklist. Then run a drill: ship a bug behind a feature flag, detect it through an alert, roll it back, and write a postmortem.",
+     "exercise": "Define three SLOs for the app (for example, the share of error-free sessions and the 75th-percentile LCP) with an alert rule for each, and justify every threshold.",
+     "hint": "alert on what users experience, not on raw error counts.",
+     "questions": [
+      "How do you know a deploy went well, beyond “the build passed”?",
+      "What's the risk of shipping public source maps, and how do you get readable stack traces without them?",
+      "Walk me through how you'd run a front-end incident from first alert to postmortem."
+     ],
+     "resources": [
+      [
+       "Sentry JavaScript docs",
+       "https://docs.sentry.io/platforms/javascript/"
+      ],
+      [
+       "Google SRE book: Service Level Objectives",
+       "https://sre.google/sre-book/service-level-objectives/"
+      ],
+      [
+       "Martin Fowler on feature toggles",
+       "https://martinfowler.com/articles/feature-toggles.html"
+      ]
+     ],
+     "tasks": [
+      "Deployed with error tracking",
+      "Release checklist",
+      "Incident drill and postmortem",
+      "Month 5 checkpoint completed"
+     ]
+    }
+   ],
+   "milestone": [
+    "Every piece of state in the app appears in the state map, and no fact is stored in two places.",
+    "The import-boundary lint rule passes, and a deliberate cross-feature import fails CI.",
+    "All 7 design system components have stories, pass the accessibility add-on, and have keyboard interaction tests.",
+    "CI finishes in 10 minutes or less, and a PR can't merge with a failing check.",
+    "A production error shows a readable stack trace that points to the original TypeScript line.",
+    "The postmortem includes a timeline, root cause, impact, and at least two follow-up actions."
+   ],
+   "checkpoint": "Re-answer assessment question 7. Then send me your three ADRs and the RFC for an architecture review; I'll critique them the way a staff engineer would."
+  },
+  {
+   "id": "m6",
+   "n": 6,
+   "weeks": "22–26",
+   "title": "Portfolio capstone",
+   "theme": "Capstone",
+   "capstone": true,
+   "intro": "The capstone is **Pedal Ops**, an operations dashboard for a fictional bike-rental company. Build it as a fresh repository, designed up front, reusing your design system and `apiClient`. Its job is to give a reviewer evidence of each skill (tests, accessibility checks, performance budgets, deployment, and written decisions) in a link they can open within 10 minutes.",
+   "topics": [
+    {
+     "id": "w22",
+     "week": 22,
+     "title": "Design and skeleton",
+     "capstoneWeek": true,
+     "plan": "Write the requirements, the state map, a C4 diagram, and ADRs 1–3 (rendering strategy, data layer, styling). Set up the repo with CI, preview deploys, and budgets from the first commit, so the first PR already runs every gate.",
+     "tasks": [
+      "Requirements written",
+      "State map",
+      "C4 diagram",
+      "ADRs 1–3 (rendering strategy, data layer, styling)",
+      "Repo with CI, preview deploys, and budgets from the first commit"
+     ]
+    },
+    {
+     "id": "w23",
+     "week": 23,
+     "title": "Core flows",
+     "capstoneWeek": true,
+     "plan": "Log in, fleet table, detail page, live status. Write tests alongside each feature, not after.",
+     "tasks": [
+      "Log in",
+      "Fleet table",
+      "Detail page",
+      "Live status",
+      "Tests written alongside each feature"
+     ]
+    },
+    {
+     "id": "w24",
+     "week": 24,
+     "title": "Hard features",
+     "capstoneWeek": true,
+     "plan": "Optimistic maintenance updates, the repair wizard with draft persistence, Markdown notes, settings. Write ADRs 4–6 (state, security, testing).",
+     "tasks": [
+      "Optimistic maintenance updates",
+      "Repair wizard with draft persistence",
+      "Markdown notes",
+      "Settings",
+      "ADRs 4–6 (state, security, testing)"
+     ]
+    },
+    {
+     "id": "w25",
+     "week": 25,
+     "title": "Hardening",
+     "capstoneWeek": true,
+     "plan": "A manual screen reader and keyboard audit with a written log, a performance pass against budgets, a security review against your threat model, an end-to-end flake hunt, and an incident drill.",
+     "tasks": [
+      "Manual screen reader and keyboard audit with a written log",
+      "Performance pass against budgets",
+      "Security review against your threat model",
+      "End-to-end flake hunt",
+      "Incident drill"
+     ]
+    },
+    {
+     "id": "w26",
+     "week": 26,
+     "title": "Communication",
+     "capstoneWeek": true,
+     "plan": "README, a case study, a 5-minute demo video, the final assessment re-take, and two mock interviews with me (technical depth, then system design).",
+     "tasks": [
+      "README",
+      "Case study",
+      "5-minute demo video",
+      "Final assessment re-take",
+      "Two mock interviews (technical depth, then system design)"
+     ]
+    }
+   ],
+   "milestone": [],
+   "checkpoint": "Final review: re-take all 8 assessment questions plus 8 new questions. Pass bar: at least 7 of 8 correct on each set, and every capstone acceptance criterion met."
+  }
+ ],
+ "capstone": {
+  "features": [
+   [
+    "Log in and log out with a mocked session cookie",
+    "Forms, security, cookie flags, CSRF reasoning"
+   ],
+   [
+    "Fleet table of 5,000 bikes with search, filters, sort, and pagination in the URL",
+    "Rendering performance, virtualization, URL state, accessible tables"
+   ],
+   [
+    "Live fleet status that polls every 10 seconds",
+    "Server-state caching, async races, live regions"
+   ],
+   [
+    "Bike detail page with repair history",
+    "Rendering strategy, static generation with revalidation, streaming"
+   ],
+   [
+    "“Send to maintenance” with an optimistic update",
+    "Mutations, rollback, error UX"
+   ],
+   [
+    "Multi-step repair-ticket wizard with a saved draft",
+    "Forms, state machines, persistence, focus management"
+   ],
+   [
+    "Station map view as an accessible list with an optional map",
+    "Responsive layout, progressive enhancement, lazy loading"
+   ],
+   [
+    "Mechanic notes in Markdown",
+    "XSS defense, sanitization, CSP"
+   ],
+   [
+    "Settings with theme, density, and reduced motion",
+    "Design tokens, user preferences"
+   ],
+   [
+    "Internal `/perf` page",
+    "RUM, percentiles, performance communication"
+   ]
+  ],
+  "apiIntro": "Define every endpoint with a shared schema used by both the MSW handlers and the app, so the mocks can't drift from the types. Use Next.js Route Handlers backed by JSON fixtures for server rendering, and MSW for tests and the browser. Add a `chaos` switch that injects latency of 100–2,000 ms and a 10% failure rate, so you can demo error handling live.",
+  "endpoints": [
+   "`POST /api/session`, `DELETE /api/session`, `GET /api/me`",
+   "`GET /api/bikes?q=&status=&station=&sort=&page=` (5,000 seeded records)",
+   "`GET /api/bikes/:id`, `PATCH /api/bikes/:id`",
+   "`GET /api/stations`",
+   "`GET /api/fleet/status` (values change on every call)",
+   "`POST /api/repair-tickets`",
+   "`POST /api/metrics` (receives RUM data)"
+  ],
+  "acceptance": [
+   [
+    "Accessibility",
+    "0 axe violations on every route; all flows keyboard-only; WCAG 2.2 AA manual checklist complete",
+    "axe in E2E on CI; `ACCESSIBILITY.md` with the manual test log for NVDA or VoiceOver"
+   ],
+   [
+    "Performance",
+    "Mobile emulation median of 5 runs: LCP ≤ 2.5 s, CLS ≤ 0.1, initial JS ≤ 170 KB compressed; no interaction over 200 ms at 4x CPU",
+    "Lighthouse CI and size check fail the build; `PERFORMANCE.md` with before and after profiles"
+   ],
+   [
+    "Testing",
+    "Domain logic ≥ 90% line coverage and mutation score ≥ 80%; 6 or more E2E critical flows; the race-condition regression test included",
+    "CI reports; `TESTING.md` explaining what is and isn't tested and why"
+   ],
+   [
+    "Security",
+    "Enforced CSP with nonces; security headers graded A on a scanner; OWASP XSS vectors neutralized; no secrets in the client bundle",
+    "Header scan screenshot; `SECURITY.md` threat model; test file for XSS vectors"
+   ],
+   [
+    "Types",
+    "Strict TypeScript, no explicit `any`, every API response validated by schema",
+    "`tsc` and lint in CI"
+   ],
+   [
+    "Deployment",
+    "Production and per-PR preview deploys; rollback in under 5 minutes; error tracking with private source maps",
+    "Release checklist; a documented rollback drill"
+   ],
+   [
+    "Monitoring",
+    "RUM dashboard; 3 SLOs with alert rules",
+    "`/perf` page; `RUNBOOK.md`"
+   ],
+   [
+    "Architecture",
+    "At least 6 ADRs; C4 context and container diagrams; enforced import boundaries",
+    "`docs/adr/`; `ARCHITECTURE.md`; lint rule in CI"
+   ],
+   [
+    "Communication",
+    "README explains the app to a reviewer in 2 minutes; a case study of 1,000–1,500 words; a 5-minute demo video",
+    "I review them as a hiring manager would"
+   ]
+  ],
+  "docs": "`README.md`, `ARCHITECTURE.md`, `docs/adr/0001-*.md` onward, `TESTING.md`, `PERFORMANCE.md`, `ACCESSIBILITY.md`, `SECURITY.md`, `RUNBOOK.md`.",
+  "caseStudy": "the problem, the constraints, three decisions with their tradeoffs, one bug you hunted down and how, the measured results, and what you'd do next. Hiring managers read this before the code."
+ },
+ "guide": {
+  "assessmentLead": "Your gaps are in the runtime mental models: the event loop, React effects, and performance diagnosis. Those three get the most hours. Security and state architecture are partial, so they get compressed weeks with a skip check. Nothing is skipped outright, because no area scored full marks.",
+  "assessment": [
+   [
+    "HTML and accessibility",
+    "Partial",
+    "Labels, native validation, keyboard access, announced errors",
+    "Full weeks 1–2"
+   ],
+   [
+    "CSS layout",
+    "Needs work",
+    "Flex min-size rule (`min-width: auto`), intrinsic sizing",
+    "Full week 3"
+   ],
+   [
+    "JavaScript async",
+    "Incorrect",
+    "Sync vs microtask vs task ordering; `async` runs synchronously until the first `await`",
+    "Full week 6, revisited in week 10"
+   ],
+   [
+    "React requests",
+    "Not shown",
+    "Race conditions, cleanup, cancellation, testing async UI",
+    "Full weeks 10–11"
+   ],
+   [
+    "Performance debugging",
+    "Not shown",
+    "Profiling workflow, long tasks, main-thread work",
+    "Full weeks 7 and 14"
+   ],
+   [
+    "Performance measurement",
+    "Not shown",
+    "Lab vs field data, Core Web Vitals, percentiles",
+    "Full week 13"
+   ],
+   [
+    "State architecture",
+    "Partial",
+    "URL state, server-state caching, shared data",
+    "Week 17, skip check available"
+   ],
+   [
+    "Security",
+    "Partial (strongest)",
+    "Sanitization, CSP, cookie flags, CSRF",
+    "Week 15, skip check available"
+   ]
+  ],
+  "assumptions": "You have 10 hours a week for 26 weeks, about 260 hours. Principles stay stack-neutral; the concrete examples use TypeScript, React, and Next.js. Every project runs against mocked APIs (Mock Service Worker or static JSON fixtures), with no backend to build.",
+  "hints": [
+   [
+    "Q2",
+    "A flex item's default minimum width is its content's minimum width, not zero. Which property overrides that? (Week 3)"
+   ],
+   [
+    "Q3",
+    "Draw three columns: call stack, microtask queue, task queue. `await null` puts the rest of the function in one of them. (Week 6)"
+   ],
+   [
+    "Q4",
+    "Two requests are in flight. Nothing guarantees they resolve in the order they were sent. What does the effect's cleanup function know? (Week 10)"
+   ],
+   [
+    "Q5",
+    "Start by recording, not by guessing. What does a long yellow bar in the Performance panel mean? (Week 7)"
+   ],
+   [
+    "Q6",
+    "Whose device, network, and cache does each number describe, and which percentile does field data report? (Week 13)"
+   ],
+   [
+    "Q7",
+    "Ask about each piece of state: who owns the truth, and who needs to share it? (Week 17)"
+   ]
+  ],
+  "rhythm": [
+   [
+    "Learn",
+    "3",
+    "Read the primary resources (specs, MDN, official docs) and take notes in your own words"
+   ],
+   [
+    "Build",
+    "4",
+    "Work on the week's realistic project in one repo you keep all six months"
+   ],
+   [
+    "Advanced exercise",
+    "1.5",
+    "Use the hint first; ask me for the solution only after a timed 45-minute attempt"
+   ],
+   [
+    "Write",
+    "1",
+    "Produce the week's communication artifact"
+   ],
+   [
+    "Review",
+    "0.5",
+    "Answer last week's interview questions out loud, then check them against your notes"
+   ]
+  ],
+  "skipChecks": "Every topic opens with a skip check: a short task with a pass bar. If you pass it in under an hour without looking anything up, do only that topic's advanced exercise and move the saved hours into your weakest area.",
+  "hintsRule": "Exercises give a hint, never the answer. When you're stuck, send me your attempt and what you've ruled out. I'll give you the next hint, then the solution once you've tried.",
+  "debugging": [
+   "Reproduce: write down the exact steps, environment, and how often it happens.",
+   "Isolate: shrink it to the smallest failing case, or bisect it (`git bisect`, commenting code out, swapping data).",
+   "Form one hypothesis and predict what you'd observe if it's true.",
+   "Verify with a tool (debugger, Performance panel, Network panel, a failing test), not by staring at code.",
+   "Fix it, add a regression test, and write it up."
+  ],
+  "artifacts": [
+   [
+    "Bug write-up",
+    "symptom, root cause, fix, how it was verified, how you'll prevent it. Keep it under 200 words."
+   ],
+   [
+    "Architecture Decision Record (ADR)",
+    "context, options considered, decision, consequences. One page."
+   ],
+   [
+    "Explainer",
+    "teach the week's concept to a teammate in 300 words plus one diagram."
+   ],
+   [
+    "PR description",
+    "what changed, why, how to test it, risks, screenshots or metrics."
+   ]
+  ],
+  "tradeoff": "For every technical choice, write one line in this form: “We chose X over Y because Z; we accept the cost of W.” If you can't name W, you haven't understood the tradeoff yet.",
+  "checkpoints": [
+   [
+    "4",
+    "Platform foundations",
+    "1, 2",
+    "Milestone 1 met; recorded accessibility walkthrough"
+   ],
+   [
+    "8",
+    "Runtime and browser",
+    "3, 4 (vanilla), 5",
+    "10 out of 10 event-loop puzzles; profile-backed 5-minute talk"
+   ],
+   [
+    "12",
+    "Types and frameworks",
+    "4 (full), 7 (URL and cache)",
+    "Race test proven in two commits; rendering explainer"
+   ],
+   [
+    "16",
+    "Quality",
+    "5, 6, 8",
+    "Milestone 4 met; mock interview average of 4 out of 5"
+   ],
+   [
+    "21",
+    "Architecture and shipping",
+    "7",
+    "ADRs and RFC hold up in review"
+   ],
+   [
+    "26",
+    "Final",
+    "All 8, plus 8 new questions",
+    "At least 7 of 8 correct on each set; capstone criteria all met"
+   ]
+  ],
+  "checkpointRule": "You pass a checkpoint when you meet its milestone criteria and re-answer its assessment questions at “Correct”. If you miss, spend up to one extra week on that month's weakest topic before moving on.",
+  "behind": "Keep the order, because the dependencies matter, and drop advanced exercises before you drop projects. Two missed weeks is the point to rescale the plan with me rather than rush it.",
+  "workWithMe": "Send your attempt, your hypothesis, and what you've ruled out. I'll reply with the next hint, then the solution. For reviews, send the PR description or ADR first and the code second, because that's the order a senior reviewer reads them in.",
+  "resources": [
+   [
+    "MDN Web Docs",
+    "https://developer.mozilla.org/",
+    "HTML, CSS, JavaScript, and Web APIs"
+   ],
+   [
+    "web.dev Learn courses",
+    "https://web.dev/learn",
+    ""
+   ],
+   [
+    "Web Vitals",
+    "https://web.dev/articles/vitals",
+    ""
+   ],
+   [
+    "WHATWG HTML Living Standard",
+    "https://html.spec.whatwg.org/",
+    "the source of truth when MDN is ambiguous"
+   ],
+   [
+    "WAI-ARIA Authoring Practices Guide",
+    "https://www.w3.org/WAI/ARIA/apg/",
+    ""
+   ],
+   [
+    "WCAG 2.2 quick reference",
+    "https://www.w3.org/WAI/WCAG22/quickref/",
+    ""
+   ],
+   [
+    "javascript.info",
+    "https://javascript.info/",
+    ""
+   ],
+   [
+    "You Don't Know JS Yet",
+    "https://github.com/getify/You-Dont-Know-JS",
+    ""
+   ],
+   [
+    "Chrome DevTools docs",
+    "https://developer.chrome.com/docs/devtools",
+    ""
+   ],
+   [
+    "High Performance Browser Networking",
+    "https://hpbn.co/",
+    ""
+   ],
+   [
+    "TypeScript Handbook",
+    "https://www.typescriptlang.org/docs/handbook/intro.html",
+    ""
+   ],
+   [
+    "react.dev",
+    "https://react.dev/",
+    ""
+   ],
+   [
+    "Next.js docs",
+    "https://nextjs.org/docs",
+    "check that the docs match the version you install; caching behavior changes between major versions"
+   ],
+   [
+    "Testing Library",
+    "https://testing-library.com/docs/",
+    ""
+   ],
+   [
+    "Playwright",
+    "https://playwright.dev/docs/intro",
+    ""
+   ],
+   [
+    "MSW",
+    "https://mswjs.io/docs/",
+    ""
+   ],
+   [
+    "OWASP Cheat Sheet Series",
+    "https://cheatsheetseries.owasp.org/",
+    ""
+   ],
+   [
+    "patterns.dev",
+    "https://www.patterns.dev/",
+    "architecture tradeoffs"
+   ],
+   [
+    "Martin Fowler's articles",
+    "https://martinfowler.com/",
+    "architecture tradeoffs"
+   ]
+  ]
+ }
+}

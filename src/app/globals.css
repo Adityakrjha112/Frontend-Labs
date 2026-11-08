@@ -1,0 +1,441 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ------------------------------------------------------------------
+   Frontend Lab: "box model" identity.
+   A cool DevTools-panel canvas, ink type, and the four box-model tones
+   (margin, border, padding, content) as the only colour. Colour is
+   spent on the roadmap diagram and on status; everything else is quiet.
+   Variable names are shared by every component; only values change here.
+   ------------------------------------------------------------------ */
+:root {
+  /* Base */
+  --paper: #f2f3f5; /* canvas */
+  --paper-2: #e6e8eb; /* sunken / hover */
+  --card: #ffffff; /* surface */
+  --ink: #1d2026;
+  --ink-2: #3f4550;
+  --ink-3: #59606b;
+  --line: #d3d7dd;
+  --line-strong: #1d2026;
+
+  /* Box-model tones (fills only, never text) */
+  --bm-margin: #f6c493;
+  --bm-border: #fbde96;
+  --bm-padding: #bfd49a;
+  --bm-content: #95c1cf;
+
+  /* Links, focus and selected states: a deep "content" blue */
+  --accent: #17606f;
+  --accent-ink: #ffffff;
+  --accent-soft: #dcecf0;
+
+  /* Status */
+  --good: #3c5a1b;
+  --good-soft: #e3edd2;
+  --warn: #6e5200;
+  --warn-soft: #fbefcc;
+  --bad: #b42318;
+  --bad-soft: #fbe4e1;
+
+  /* Code surfaces stay dark in both themes */
+  --code-bg: #202226;
+  --code-ink: #e8eaed;
+  --code-line: #3a3d42;
+
+  /* Activity heatmap: the content tone, light to deep */
+  --heat-0: #e4e7eb;
+  --heat-1: #c6dfe6;
+  --heat-2: #95c1cf;
+  --heat-3: #4f8e9f;
+  --heat-4: #17606f;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --paper: #1f2023;
+  --paper-2: #2c2e33;
+  --card: #26282c;
+  --ink: #e6e8eb;
+  --ink-2: #c4c8ce;
+  --ink-3: #a3a8b0;
+  --line: #3b3e44;
+  --line-strong: #e6e8eb;
+
+  /* Deep enough that light text on each tone clears 5:1. */
+  --bm-margin: #6e5034;
+  --bm-border: #665830;
+  --bm-padding: #4a5832;
+  --bm-content: #375c67;
+
+  --accent: #86cad9;
+  --accent-ink: #12272c;
+  --accent-soft: #24393f;
+
+  --good: #b7d58c;
+  --good-soft: #2d3a22;
+  --warn: #f2d27a;
+  --warn-soft: #3d3420;
+  --bad: #f28b82;
+  --bad-soft: #3f2422;
+
+  --code-bg: #17181b;
+  --code-ink: #e8eaed;
+  --code-line: #33363b;
+
+  --heat-0: #2e3136;
+  --heat-1: #2f4a52;
+  --heat-2: #3f6874;
+  --heat-3: #5f9cad;
+  --heat-4: #9fd3e0;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-card: var(--card);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-good: var(--good);
+  --color-good-soft: var(--good-soft);
+  --color-bad: var(--bad);
+  --color-bad-soft: var(--bad-soft);
+  --color-code-bg: var(--code-bg);
+  --color-code-ink: var(--code-ink);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-bm-margin: var(--bm-margin);
+  --color-bm-border: var(--bm-border);
+  --color-bm-padding: var(--bm-padding);
+  --color-bm-content: var(--bm-content);
+
+  /* One family; the Mono sibling only for code and question IDs. */
+  --font-display: "Atkinson Hyperlegible Next Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Atkinson Hyperlegible Next Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono Variable", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Major-third scale */
+  --text-xs: 0.8rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5625rem;
+  --text-3xl: 1.953rem;
+  --text-4xl: 2.441rem;
+  --text-5xl: 3.052rem;
+  --text-6xl: 3.815rem;
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 5rem;
+  }
+  body {
+    background-color: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 750;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  h1 {
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+  ::selection {
+    background: var(--bm-content);
+    color: var(--ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+  .code-surface :focus-visible,
+  .code-surface:focus-visible {
+    outline-color: #86cad9;
+  }
+  a {
+    text-underline-offset: 0.18em;
+  }
+  button:not(:disabled),
+  [role="button"],
+  label[for],
+  summary {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* A grid without explicit columns is a single-column stack. Its implicit
+     "auto" column grows to fit the widest content (tables, code), which
+     pushes phones into sideways scrolling; this column can shrink. */
+  .grid:not([class*="grid-cols-"]) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* Kept as a no-op so older markup stays valid; decoration was removed. */
+  .graph-paper {
+    background-image: none;
+  }
+
+  /* A quiet sentence-case label. Only used where it carries information. */
+  .eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--ink-3);
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.05rem;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    font-weight: 650;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    background: var(--card);
+    color: var(--ink);
+    transition:
+      background-color 120ms ease,
+      border-color 120ms ease;
+  }
+  .btn:hover:not(:disabled) {
+    border-color: var(--ink-3);
+    background: var(--paper-2);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--ink-2);
+    border-color: var(--ink-2);
+  }
+  .btn-ghost {
+    border-color: transparent;
+    background: transparent;
+  }
+  .btn-sm {
+    min-height: 2.25rem;
+    padding: 0.3rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+
+  /* Filter toggles: square-cornered like DevTools filter buttons. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2.25rem;
+    padding: 0.3rem 0.75rem;
+    border-radius: 4px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition:
+      border-color 120ms ease,
+      background-color 120ms ease;
+  }
+  .chip:hover {
+    border-color: var(--ink-3);
+  }
+  input:checked + .chip,
+  .chip[aria-pressed="true"] {
+    background: var(--accent-soft);
+    color: var(--ink);
+    border-color: var(--accent);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  input:focus-visible + .chip {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 4px;
+    padding: 0.1rem 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid var(--line);
+    color: var(--ink-2);
+    background: var(--card);
+    white-space: nowrap;
+  }
+  .tag-id {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: var(--ink);
+    border-color: var(--ink-3);
+  }
+
+  .prose-lab {
+    max-width: 68ch;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .field {
+    width: 100%;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--card);
+    color: var(--ink);
+    padding: 0.6rem 0.8rem;
+  }
+  .field:focus-visible {
+    border-color: var(--accent);
+    outline-offset: 0;
+  }
+
+  /* "Computed panel" stat: a property and its value on one rule-separated row. */
+  .kv {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: baseline;
+    gap: 0.25rem 1rem;
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--line);
+  }
+  .kv > dt {
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+  .kv > dd:first-of-type {
+    font-family: var(--font-display);
+    font-size: 1.953rem;
+    font-weight: 750;
+    letter-spacing: -0.02em;
+    line-height: 1;
+    text-align: right;
+  }
+  .kv > dd + dd {
+    grid-column: 1 / -1;
+    font-size: 0.875rem;
+    color: var(--ink-3);
+  }
+
+  .sr-only-focusable:not(:focus) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+}
+
+/* User-triggered reveal (hints, answers): shows what changed. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.animate-rise {
+  animation: rise 200ms ease-out both;
+}
+
+/* The one orchestrated page-load moment: box-model layers filling in. */
+@keyframes layer-in {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Box-model hero: layers settle in once, from the viewport down to the core. */
+.box-model .box-layer {
+  animation: layer-in 420ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+/* Touch screens: every control is at least 44px tall (WCAG 2.5.5 target size). */
+@media (pointer: coarse) {
+  .btn,
+  .btn-sm,
+  .chip {
+    min-height: 2.75rem;
+  }
+  .btn-sm,
+  .chip {
+    min-width: 2.75rem;
+    justify-content: center;
+  }
+  .rm-segmented label {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.75rem;
+  }
+  .rm-check {
+    min-height: 2.75rem;
+    align-items: center;
+  }
+  /* Height only: roadmap month and week summaries are grid layouts, and
+     changing a summary's display would also hide its disclosure triangle. */
+  summary {
+    min-height: 2.75rem;
+  }
+  .rm-hint-box > summary,
+  details.card > summary {
+    padding-block: 0.6rem;
+  }
+}
